@@ -21,7 +21,7 @@ class HomeViewModel extends ChangeNotifier {
   double _temp2 = 0.0;
   double _temp3 = 0.0;
   double _temp4 = 0.0;
-  double _overheatDistance = 0.0;
+  String _overheatFault = '';
 
   String? get ipAddr => _ipAddr;
   bool get isConnected => _isConnected;
@@ -36,7 +36,7 @@ class HomeViewModel extends ChangeNotifier {
   double get temp2 => _temp2;
   double get temp3 => _temp3;
   double get temp4 => _temp4;
-  double get overheatDistance => _overheatDistance;
+  String get overheatFault => _overheatFault;
 
   Future<void> setIpAddr(String ipAddr) async {
     _resetData();
@@ -93,8 +93,8 @@ class HomeViewModel extends ChangeNotifier {
         case 'temp4':
           _temp4 = double.parse(data);
           break;
-        case 'overheatDistance':
-          _overheatDistance = double.parse(data);
+        case 'overheatFault':
+          _overheatFault = data;
           break;
         default:
           throw Exception('Unknown data type: $dataType');
@@ -118,7 +118,7 @@ class HomeViewModel extends ChangeNotifier {
     _temp2 = 0.0;
     _temp3 = 0.0;
     _temp4 = 0.0;
-    _overheatDistance = 0.0;
+    _overheatFault = '';
   }
 
   Future<void> _loadData() async {
@@ -138,7 +138,7 @@ class HomeViewModel extends ChangeNotifier {
       getTemp2Response,
       getTemp3Response,
       getTemp4Response,
-      getOverheatDistanceResponse,
+      getOverheatFaultResponse,
     ] = await Future.wait([
       _httpGet(Uri.http(httpAuthority, '/getFault')),
       _httpGet(Uri.http(httpAuthority, '/getFaultDistance')),
@@ -150,7 +150,7 @@ class HomeViewModel extends ChangeNotifier {
       _httpGet(Uri.http(httpAuthority, '/getTemp2')),
       _httpGet(Uri.http(httpAuthority, '/getTemp3')),
       _httpGet(Uri.http(httpAuthority, '/getTemp4')),
-      _httpGet(Uri.http(httpAuthority, '/getOverheatDistance')),
+      _httpGet(Uri.http(httpAuthority, '/getOverheatFault')),
     ]);
 
     _fault = getFaultResponse;
@@ -163,7 +163,7 @@ class HomeViewModel extends ChangeNotifier {
     _temp2 = double.parse(getTemp2Response);
     _temp3 = double.parse(getTemp3Response);
     _temp4 = double.parse(getTemp4Response);
-    _overheatDistance = double.parse(getOverheatDistanceResponse);
+    _overheatFault = getOverheatFaultResponse;
   }
 
   String? _getHttpAuthority() {

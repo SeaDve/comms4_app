@@ -107,9 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     subtitle: Text(widget._viewModel.temp4.toStringAsFixed(2)),
                   ),
                   ListTile(
-                    title: const Text('Overheat Distance'),
+                    title: const Text('Overheat Fault'),
                     subtitle: Text(
-                      widget._viewModel.overheatDistance.toStringAsFixed(2),
+                      widget._viewModel.overheatFault.isEmpty
+                          ? 'None'
+                          : widget._viewModel.overheatFault,
                     ),
                   ),
                 ],
